@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сюрприз</title>
+    <style>
+        body {
+            margin: 0; height: 100vh; background: #1a1a1a; display: flex; justify-content: center; align-items: center; overflow: hidden; perspective: 1000px;
+        }
+
+        /* Конверт (в начале) */
+        .envelope {
+            position: relative; width: 320px; height: 220px; background: #d4af37; border-radius: 5px; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: all 0.5s;
+        }
+        .seal {
+            position: absolute; top: 85px; left: 130px; width: 60px; height: 60px;
+            background: radial-gradient(circle at 30% 30%, #ff3333, #b30000 60%, #660000);
+            border-radius: 50%; box-shadow: inset -3px -3px 8px rgba(0,0,0,0.6), inset 3px 3px 8px rgba(255,100,100,0.4), 0 6px 10px rgba(0,0,0,0.5);
+            z-index: 4; transition: opacity 0.5s, transform 0.5s; clip-path: polygon(50% 0%, 85% 10%, 100% 40%, 95% 75%, 75% 95%, 40% 100%, 10% 85%, 0% 50%, 10% 15%);
+        }
+        .seal::after { content: 'Д'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #880000; font-weight: bold; font-size: 28px; font-family: 'Georgia', serif; text-shadow: -1px -1px 1px rgba(255,255,255,0.2), 1px 1px 2px rgba(0,0,0,0.8); }
+
+        .click-hint {
+            position: absolute; bottom: -40px; width: 100%; text-align: center; color: #888; font-family: Arial; font-size: 14px; animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+        /* Картинка (появляется после) */
+        .image-container {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+            opacity: 0; transition: all 1s ease-in-out; display: flex; flex-direction: column; align-items: center; z-index: 10;
+        }
+        .image-container img {
+            max-width: 90vw; max-height: 80vh; border-radius: 10px; box-shadow: 0 0 50px rgba(0,0,0,0.8); border: 5px solid #fff;
+        }
+
+        /* Класс для активации анимации */
+        .reveal {
+            opacity: 1 !important;
+            transform: translate(-50%, -50%) scale(1) !important;
+        }
+        
+        .envelope.hidden-env {
+            opacity: 0; transform: scale(0.8); pointer-events: none;
+        }
+
+        /* Анимация разворачивания (8 раз) */
+        @keyframes unfoldPaper {
+            0% { transform: translate(-50%, -50%) scale(0.1) rotate(0deg); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(0.5) rotate(180deg); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(720deg); opacity: 1; }
+        }
+        
+        .unfolding {
+            animation: unfoldPaper 2s forwards;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="envelope" id="envelope" onclick="startSurprise()">
+        <div class="seal"></div>
+        <div class="click-hint">Нажми на печать</div>
+    </div>
+
+    <div class="image-container" id="image-block">
+        <!-- ЗАМЕНИ 'gorilla.jpg' на точное название файла, которое ты загрузил на GitHub -->
+        <img src="gorilla.jpg" alt="Сюрприз">
+    </div>
+
+    <script>
+        function startSurprise() {
+            const envelope = document.getElementById('envelope');
+            const imageBlock = document.getElementById('image-block');
+
+            // 1. Прячем конверт (эффект открытия)
+            envelope.classList.add('hidden-env');
+
+            // 2. Через 0.5 сек показываем разворачивающуюся бумагу
+            setTimeout(() => {
+                imageBlock.classList.add('reveal');
+                imageBlock.classList.add('unfolding'); // Запускаем анимацию вращения
+                
+                // Убираем класс вращения, чтобы картинка встала ровно
+                setTimeout(() => {
+                    imageBlock.classList.remove('unfolding');
+                }, 2000);
+
+            }, 500);
+        }
+    </script>
+</body>
+</html>
