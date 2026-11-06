@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Викторина</title>
+    <style>
+        body {
+            margin: 0; height: 100vh; background-color: #0a1128; display: flex; flex-direction: column; justify-content: center; align-items: center; font-family: 'Arial', sans-serif; color: white; overflow: hidden;
+        }
+        .container {
+            width: 90%; max-width: 400px; text-align: center; background: rgba(255,255,255,0.05); padding: 30px 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 1px solid #1e3a8a;
+        }
+        h2 { font-size: 1.4em; margin-bottom: 20px; color: #60a5fa; }
+
+        .btn {
+            display: block; width: 100%; padding: 15px; margin: 10px 0; border-radius: 10px; border: none; background: #2563eb; color: white; font-size: 1.1em; cursor: pointer; transition: 0.3s;
+        }
+        .btn:hover { background: #1d4ed8; }
+        .btn.correct { background: #10b981 !important; transform: scale(1.05); }
+        .btn.wrong { background: #ef4444 !important; animation: shake 0.4s; }
+
+        .hidden { display: none !important; }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="quiz-block">
+        <!-- Вопрос 1 -->
+        <div id="q1">
+            <h2>Вопрос 1</h2>
+            <p>В каком классе я пришёл?</p>
+            <button class="btn" onclick="checkAnswer(this, true)">В 3 классе</button>
+            <button class="btn" onclick="checkAnswer(this, false)">В 4 классе</button>
+            <button class="btn" onclick="checkAnswer(this, false)">В 2 классе</button>
+        </div>
+
+        <!-- Вопрос 2 -->
+        <div id="q2" class="hidden">
+            <h2>Вопрос 2</h2>
+            <p>После чего мы начали дружить еще сильнее?</p>
+            <button class="btn" onclick="checkAnswer(this, true)">Драки</button>
+            <button class="btn" onclick="checkAnswer(this, false)">Разговора</button>
+            <button class="btn" onclick="checkAnswer(this, false)">После расставания телки</button>
+        </div>
+
+        <!-- Вопрос 3 -->
+        <div id="q3" class="hidden">
+            <h2>Вопрос 3</h2>
+            <p>Как ты меня называешь?</p>
+            <button class="btn" onclick="checkAnswer(this, true)">Черный</button>
+            <button class="btn" onclick="checkAnswer(this, false)">Дружище</button>
+            <button class="btn" onclick="checkAnswer(this, false)">Бро</button>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+
+        function checkAnswer(btn, isCorrect) {
+            if (isCorrect) {
+                btn.classList.add('correct');
+                
+                // Задержка перед переходом к следующему вопросу
+                setTimeout(() => {
+                    if (currentQuestion === 1) {
+                        document.getElementById('q1').classList.add('hidden');
+                        document.getElementById('q2').classList.remove('hidden');
+                        document.getElementById('q2').classList.add('fade-in');
+                        currentQuestion = 2;
+                    } else if (currentQuestion === 2) {
+                        document.getElementById('q2').classList.add('hidden');
+                        document.getElementById('q3').classList.remove('hidden');
+                        document.getElementById('q3').classList.add('fade-in');
+                        currentQuestion = 3;
+                    } else if (currentQuestion === 3) {
+                        // Все вопросы пройдены — переходим на страницу с конвертом
+                        window.location.href = "main.html";
+                    }
+                }, 800); // 0.8 секунды, чтобы человек увидел, что ответ верный
+            } else {
+                btn.classList.add('wrong');
+                // Убираем красный цвет через секунду, чтобы можно было попробовать снова
+                setTimeout(() => {
+                    btn.classList.remove('wrong');
+                }, 1000);
+            }
+        }
+    </script>
+</body>
+</html>
