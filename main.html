@@ -66,8 +66,8 @@
     </div>
 
     <div class="image-container" id="image-block">
-        <!-- ЗАМЕНИ 'gorilla.jpg' на точное название файла, которое ты загрузил на GitHub -->
-        <img src="gorilla.jpg" alt="Сюрприз">
+        <!-- ТУТ ТОЧНОЕ НАЗВАНИЕ ТВОЕГО ФАЙЛА -->
+        <img src="Screenshot_20261106-190116.jpg" alt="Сюрприз">
     </div>
 
     <script>
@@ -75,15 +75,12 @@
             const envelope = document.getElementById('envelope');
             const imageBlock = document.getElementById('image-block');
 
-            // 1. Прячем конверт (эффект открытия)
             envelope.classList.add('hidden-env');
 
-            // 2. Через 0.5 сек показываем разворачивающуюся бумагу
             setTimeout(() => {
                 imageBlock.classList.add('reveal');
-                imageBlock.classList.add('unfolding'); // Запускаем анимацию вращения
+                imageBlock.classList.add('unfolding'); 
                 
-                // Убираем класс вращения, чтобы картинка встала ровно
                 setTimeout(() => {
                     imageBlock.classList.remove('unfolding');
                 }, 2000);
